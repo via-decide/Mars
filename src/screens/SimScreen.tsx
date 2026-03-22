@@ -188,41 +188,41 @@ export default function SimScreen() {
 
   return (
     <div id="screen-sim" className="screen active flex flex-col h-full pt-[env(safe-area-inset-top,0px)] pl-[env(safe-area-inset-left,0px)] pr-[env(safe-area-inset-right,0px)] pb-[env(safe-area-inset-bottom,0px)] bg-[#060608]">
-      <div className="sim-topbar grid grid-cols-[1fr_auto_1fr] items-center py-2 px-3.5 border-b border-[#ffffff12] bg-[#111318] shrink-0 gap-2">
-        <div className="topbar-left flex gap-3.5 items-center">
+      <div className="sim-topbar flex items-center justify-between py-2 px-3 border-b border-[#ffffff12] bg-[#111318] shrink-0 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="topbar-left flex gap-3.5 items-center shrink-0">
           <div className="stat-chip flex flex-col gap-[2px]">
-            <div className="stat-chip-label font-mono text-[7px] text-[#6B6860] tracking-[2px]">Energy</div>
+            <div className="stat-chip-label font-mono text-[7px] text-[#6B6860] tracking-[2px] whitespace-nowrap">Energy</div>
             <div className="energy-bar flex items-center gap-1.5">
-              <div className="ebar-track w-[70px] h-1 bg-[#1a1a1a] border border-[#ffffff12]">
+              <div className="ebar-track w-[40px] sm:w-[70px] h-1 bg-[#1a1a1a] border border-[#ffffff12]">
                 <div className="ebar-fill h-full transition-all duration-600" style={{ width: `${e}%`, background: e < 15 ? 'var(--red)' : e < 35 ? 'var(--amber)' : 'var(--green)' }}></div>
               </div>
-              <span className="stat-chip-val font-mono text-[12px]" style={{ color: e < 15 ? 'var(--red)' : e < 35 ? 'var(--amber)' : 'var(--text)' }}>{e}%</span>
+              <span className="stat-chip-val font-mono text-[12px] whitespace-nowrap" style={{ color: e < 15 ? 'var(--red)' : e < 35 ? 'var(--amber)' : 'var(--text)' }}>{e}%</span>
             </div>
           </div>
           <div className="stat-chip flex flex-col gap-[2px]">
-            <div className="stat-chip-label font-mono text-[7px] text-[#6B6860] tracking-[2px]">Risk Budget</div>
+            <div className="stat-chip-label font-mono text-[7px] text-[#6B6860] tracking-[2px] whitespace-nowrap">Risk Budget</div>
             <div className="energy-bar flex items-center gap-1.5">
-              <div className="ebar-track w-[70px] h-1 bg-[#1a1a1a] border border-[#ffffff12]">
+              <div className="ebar-track w-[40px] sm:w-[70px] h-1 bg-[#1a1a1a] border border-[#ffffff12]">
                 <div className="ebar-fill h-full transition-all duration-600" style={{ width: `${Math.min(100, r)}%`, background: r >= 70 ? 'var(--red)' : r >= 40 ? 'var(--amber)' : 'var(--green)' }}></div>
               </div>
-              <span className="stat-chip-val font-mono text-[12px]" style={{ color: r >= 70 ? 'var(--red)' : r >= 40 ? 'var(--amber)' : 'var(--green)' }}>{r}</span>
+              <span className="stat-chip-val font-mono text-[12px] whitespace-nowrap" style={{ color: r >= 70 ? 'var(--red)' : r >= 40 ? 'var(--amber)' : 'var(--green)' }}>{r}</span>
             </div>
           </div>
         </div>
-        <div className="topbar-center text-center">
-          <div className="mission-badge font-display text-[18px] text-[#FF6B35] tracking-[2px]">HEX-01</div>
-          <div className="sol-line font-mono text-[9px] text-[#6B6860]">{solLine}</div>
-          {state.role && <div className="qa-sim-marker mt-1.5 font-mono text-[8px] tracking-[1.6px] text-[#3DFF8F] border border-[rgba(61,255,143,0.3)] bg-[rgba(61,255,143,0.08)] py-0.5 px-1.5 inline-flex items-center gap-1.25">● SIM STARTED · {state.role.toUpperCase()}</div>}
+        <div className="topbar-center text-center shrink-0 flex flex-col items-center">
+          <div className="mission-badge font-display text-[18px] text-[#FF6B35] tracking-[2px] whitespace-nowrap">HEX-01</div>
+          <div className="sol-line font-mono text-[9px] text-[#6B6860] whitespace-nowrap">{solLine}</div>
+          {state.role && <div className="qa-sim-marker mt-1.5 font-mono text-[8px] tracking-[1.6px] text-[#3DFF8F] border border-[rgba(61,255,143,0.3)] bg-[rgba(61,255,143,0.08)] py-0.5 px-1.5 inline-flex items-center gap-1.25 whitespace-nowrap">● SIM STARTED · {state.role.toUpperCase()}</div>}
         </div>
-        <div className="topbar-right flex justify-end items-center gap-2.5">
-          <div className="tier-display flex items-center gap-1.5 font-mono text-[10px] text-[#FFB830]">
-            <span>T{state.tier}</span><span className="text-[#6B6860]">{tNames[state.tier] || ''}</span>
+        <div className="topbar-right flex justify-end items-center gap-2.5 shrink-0">
+          <div className="tier-display flex items-center gap-1.5 font-mono text-[10px] text-[#FFB830] whitespace-nowrap">
+            <span>T{state.tier}</span><span className="text-[#6B6860] whitespace-nowrap">{tNames[state.tier] || ''}</span>
           </div>
           <div className="stat-chip flex flex-col gap-[2px]">
-            <div className="stat-chip-label font-mono text-[7px] text-[#6B6860] tracking-[2px]">Valid.</div>
+            <div className="stat-chip-label font-mono text-[7px] text-[#6B6860] tracking-[2px] whitespace-nowrap">Valid.</div>
             <div className="flex gap-[2px] mt-[2px]">
               {[0, 1, 2, 3, 4].map(i => (
-                <div key={i} className="val-pip w-2 h-2 border rounded-[1px]" style={{ background: i < state.validation ? 'var(--green)' : 'transparent', borderColor: i < state.validation ? 'var(--green)' : 'var(--green-dim)' }}></div>
+                <div key={i} className="val-pip w-2 h-2 border rounded-[1px] shrink-0" style={{ background: i < state.validation ? 'var(--green)' : 'transparent', borderColor: i < state.validation ? 'var(--green)' : 'var(--green-dim)' }}></div>
               ))}
             </div>
           </div>
@@ -237,7 +237,7 @@ export default function SimScreen() {
       `}</style>
       <div 
         ref={viewportRef}
-        className="sim-viewport flex-1 relative overflow-hidden bg-[#030405] cursor-crosshair min-h-0 touch-none"
+        className="sim-viewport flex-1 relative overflow-hidden bg-[#030405] cursor-crosshair min-h-[200px] touch-none"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerLeave={() => { touchStart.current = null; }}
@@ -347,64 +347,42 @@ export default function SimScreen() {
         <div className={`solar-ring absolute inset-0 z-4 border-2 border-transparent pointer-events-none transition-all duration-500 ${state.isCharging ? 'border-[rgba(255,184,48,0.2)] shadow-[inset_0_0_50px_rgba(255,184,48,0.06)]' : ''}`}></div>
       </div>
 
-      <div className="sim-bottom grid grid-cols-2 border-t border-[#ffffff12] bg-[#111318] shrink-0 h-[178px]">
-        <div className="cam-panel border-r border-[#ffffff12] py-2 px-2.5 flex flex-col gap-[3px] overflow-hidden">
-          <div className="panel-lbl font-mono text-[7px] text-[#6B6860] tracking-[2px] border-b border-[#ffffff12] pb-1 mb-[3px] uppercase">// CAM FEED — HEX-01-A</div>
-          <div className="cam-telem font-mono text-[9px] leading-loose flex-1">
-            <div><span className="text-[#6B6860] inline-block w-10">TEMP</span><span className="text-[#A8A49C]">{(-70 + 40 * Math.sin(state.timeFrac * Math.PI * 2)).toFixed(1)}°C</span></div>
-            <div><span className="text-[#6B6860] inline-block w-10">PRESS</span><span className="text-[#A8A49C]">0.636 kPa</span></div>
-            <div><span className="text-[#6B6860] inline-block w-10">WIND</span><span className="text-[#A8A49C]">4.2 m/s NNW</span></div>
-            <div><span className="text-[#6B6860] inline-block w-10">RAD</span><span className="text-[#A8A49C]">0.18 mGy/d</span></div>
-            <div><span className="text-[#6B6860] inline-block w-10">STATE</span><span className={state.roverState === 'IDLE' ? 'text-[#3DFF8F]' : 'text-[#FFB830]'}>{state.roverState}</span></div>
-            <div><span className="text-[#6B6860] inline-block w-10">COOL</span><span className="text-[#FFB830]">{state.instrumentCooldown > 0 ? `${state.instrumentCooldown}s` : 'READY'}</span></div>
+      <div className="sim-bottom flex flex-row border-t border-[#ffffff12] bg-[#111318] shrink-0 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="cam-panel border-r border-[#ffffff12] py-2 px-2 flex flex-col gap-[2px] flex-1 min-w-[110px]">
+          <div className="panel-lbl font-mono text-[7px] text-[#6B6860] tracking-[2px] border-b border-[#ffffff12] pb-1 mb-1 uppercase whitespace-nowrap">// TELEMETRY</div>
+          <div className="cam-telem font-mono text-[8px] leading-tight flex flex-col gap-1">
+            <div className="flex justify-between"><span className="text-[#6B6860]">TEMP</span><span className="text-[#A8A49C]">{(-70 + 40 * Math.sin(state.timeFrac * Math.PI * 2)).toFixed(1)}°C</span></div>
+            <div className="flex justify-between"><span className="text-[#6B6860]">PRESS</span><span className="text-[#A8A49C]">0.636 kPa</span></div>
+            <div className="flex justify-between"><span className="text-[#6B6860]">WIND</span><span className="text-[#A8A49C]">4.2 m/s</span></div>
+            <div className="flex justify-between"><span className="text-[#6B6860]">RAD</span><span className="text-[#A8A49C]">0.18 mGy/d</span></div>
+            <div className="flex justify-between"><span className="text-[#6B6860]">STATE</span><span className={state.roverState === 'IDLE' ? 'text-[#3DFF8F]' : 'text-[#FFB830]'}>{state.roverState}</span></div>
+            <div className="flex justify-between"><span className="text-[#6B6860]">COOL</span><span className="text-[#FFB830]">{state.instrumentCooldown > 0 ? `${state.instrumentCooldown}s` : 'READY'}</span></div>
           </div>
-          
-          <div className="cam-ctrls flex flex-col gap-1 mt-1 border-t border-[#ffffff08] pt-1.5">
-            <div className="font-mono text-[6px] text-[#6B6860] tracking-[1px] uppercase">Camera Pan/Tilt</div>
-            <div className="flex items-center gap-1">
-              <div className="grid grid-cols-3 gap-1">
-                <div />
-                <button 
-                  className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none" 
-                  onPointerDown={() => camInput.current.tilt = -1}
-                  onPointerUp={() => camInput.current.tilt = 0}
-                  onPointerLeave={() => camInput.current.tilt = 0}
-                >↑</button>
-                <div />
-                <button 
-                  className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none" 
-                  onPointerDown={() => camInput.current.pan = -1}
-                  onPointerUp={() => camInput.current.pan = 0}
-                  onPointerLeave={() => camInput.current.pan = 0}
-                >←</button>
-                <button className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#FFB830] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white" onClick={() => resetCamera()}>•</button>
-                <button 
-                  className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none" 
-                  onPointerDown={() => camInput.current.pan = 1}
-                  onPointerUp={() => camInput.current.pan = 0}
-                  onPointerLeave={() => camInput.current.pan = 0}
-                >→</button>
-                <div />
-                <button 
-                  className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none" 
-                  onPointerDown={() => camInput.current.tilt = 1}
-                  onPointerUp={() => camInput.current.tilt = 0}
-                  onPointerLeave={() => camInput.current.tilt = 0}
-                >↓</button>
-                <div />
-              </div>
-              <div className="flex-1 font-mono text-[8px] text-[#A8A49C] flex flex-col gap-0.5">
-                <div>PAN: {Math.round(state.camPan)}°</div>
-                <div>TLT: {Math.round(state.camTilt)}°</div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="scan-sweep-line w-full h-[1px] opacity-50 mt-1" style={{ background: 'linear-gradient(90deg,transparent,var(--green),transparent)', animation: 'sweep 3s linear infinite' }}></div>
+          <div className="scan-sweep-line w-full h-[1px] opacity-50 mt-auto" style={{ background: 'linear-gradient(90deg,transparent,var(--green),transparent)', animation: 'sweep 3s linear infinite' }}></div>
         </div>
-        <div className="ctrl-panel flex flex-col items-center justify-center p-2 gap-1.5 touch-none">
-          <div className="panel-lbl self-stretch font-mono text-[7px] text-[#6B6860] tracking-[2px] uppercase">// MOVEMENT — TAP OR SWIPE</div>
-          <div className="dir-grid grid grid-cols-[repeat(3,40px)] grid-rows-[repeat(3,40px)] gap-[3px]">
+        
+        <div className="cam-ctrls border-r border-[#ffffff12] py-2 px-2 flex flex-col items-center justify-center shrink-0 w-[100px]">
+          <div className="font-mono text-[7px] text-[#6B6860] tracking-[1px] uppercase mb-2 whitespace-nowrap">// CAM PAN/TLT</div>
+          <div className="grid grid-cols-3 gap-1 mb-1.5">
+            <div />
+            <button className="w-7 h-7 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none rounded-[2px]" onPointerDown={() => camInput.current.tilt = -1} onPointerUp={() => camInput.current.tilt = 0} onPointerLeave={() => camInput.current.tilt = 0}>↑</button>
+            <div />
+            <button className="w-7 h-7 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none rounded-[2px]" onPointerDown={() => camInput.current.pan = -1} onPointerUp={() => camInput.current.pan = 0} onPointerLeave={() => camInput.current.pan = 0}>←</button>
+            <button className="w-7 h-7 bg-[#181B22] border border-[#ffffff12] text-[#FFB830] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white rounded-[2px]" onClick={() => resetCamera()}>•</button>
+            <button className="w-7 h-7 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none rounded-[2px]" onPointerDown={() => camInput.current.pan = 1} onPointerUp={() => camInput.current.pan = 0} onPointerLeave={() => camInput.current.pan = 0}>→</button>
+            <div />
+            <button className="w-7 h-7 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none rounded-[2px]" onPointerDown={() => camInput.current.tilt = 1} onPointerUp={() => camInput.current.tilt = 0} onPointerLeave={() => camInput.current.tilt = 0}>↓</button>
+            <div />
+          </div>
+          <div className="font-mono text-[7px] text-[#A8A49C] flex gap-2">
+            <span>P:{Math.round(state.camPan)}°</span>
+            <span>T:{Math.round(state.camTilt)}°</span>
+          </div>
+        </div>
+        
+        <div className="ctrl-panel py-2 px-2 flex flex-col items-center justify-center shrink-0 w-[120px] touch-none">
+          <div className="font-mono text-[7px] text-[#6B6860] tracking-[1px] uppercase mb-2 whitespace-nowrap">// MOVEMENT</div>
+          <div className="dir-grid grid grid-cols-[repeat(3,32px)] grid-rows-[repeat(3,32px)] gap-[3px]">
             {[
               { dir: 'NW', icon: '↖' },
               { dir: 'N', icon: '↑' },

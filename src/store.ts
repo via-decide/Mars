@@ -34,6 +34,8 @@ export const initialState = {
   lowPerfMode: false,
   coachTipIdx: 0,
   coachTipVisible: false,
+  camPan: 0,
+  camTilt: 0,
 };
 
 export type GameState = typeof initialState;
@@ -97,5 +99,19 @@ export function toast(msg: string) {
 export function logEvent(type: string, data: any) {
   store.setState(s => {
     s.log.push({ ts: new Date().toISOString(), type, ...data });
+  });
+}
+
+export function updateCamera(pan: number, tilt: number) {
+  store.setState(s => {
+    s.camPan = Math.max(-45, Math.min(45, s.camPan + pan));
+    s.camTilt = Math.max(-20, Math.min(20, s.camTilt + tilt));
+  });
+}
+
+export function resetCamera() {
+  store.setState(s => {
+    s.camPan = 0;
+    s.camTilt = 0;
   });
 }

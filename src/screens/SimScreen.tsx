@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useGameStore, openModal, store } from '../store';
+import { useGameStore, openModal, store, updateCamera, resetCamera } from '../store';
 import { move, doScan, isNight } from '../engine';
+
+const CAM_ACCEL = 0.15;
+const CAM_FRICTION = 0.85;
+const CAM_MAX_SPEED = 2.5;
 
 export default function SimScreen() {
   const state = useGameStore();
@@ -8,6 +12,10 @@ export default function SimScreen() {
   const [pressedBtn, setPressedBtn] = useState<string | null>(null);
   const touchStart = useRef<{ x: number, y: number, time: number } | null>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
+  
+  const camInput = useRef({ pan: 0, tilt: 0 });
+  const camVelocity = useRef({ pan: 0, tilt: 0 });
+  const rafRef = useRef<number | null>(null);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     touchStart.current = { x: e.clientX, y: e.clientY, time: Date.now() };
@@ -85,6 +93,11 @@ export default function SimScreen() {
         case 'z': case 'Z': dir = 'SW'; break;
         case 'c': case 'C': dir = 'SE'; break;
         case ' ': dir = 'SCAN'; break;
+        case 'i': case 'I': camInput.current.tilt = -1; break;
+        case 'k': case 'K': camInput.current.tilt = 1; break;
+        case 'j': case 'J': camInput.current.pan = -1; break;
+        case 'l': case 'L': camInput.current.pan = 1; break;
+        case 'r': case 'R': resetCamera(); break;
       }
 
       if (dir) {
@@ -111,16 +124,52 @@ export default function SimScreen() {
         case 'z': case 'Z': dir = 'SW'; break;
         case 'c': case 'C': dir = 'SE'; break;
         case ' ': dir = 'SCAN'; break;
+        case 'i': case 'I': if (camInput.current.tilt === -1) camInput.current.tilt = 0; break;
+        case 'k': case 'K': if (camInput.current.tilt === 1) camInput.current.tilt = 0; break;
+        case 'j': case 'J': if (camInput.current.pan === -1) camInput.current.pan = 0; break;
+        case 'l': case 'L': if (camInput.current.pan === 1) camInput.current.pan = 0; break;
       }
       if (dir) {
         setPressedBtn(prev => prev === dir ? null : prev);
       }
     };
 
+    const updateLoop = () => {
+      const { pan: inPan, tilt: inTilt } = camInput.current;
+      const { pan: vPan, tilt: vTilt } = camVelocity.current;
+
+      // Apply acceleration
+      let nextVPan = vPan + inPan * CAM_ACCEL;
+      let nextVTilt = vTilt + inTilt * CAM_ACCEL;
+
+      // Apply friction
+      nextVPan *= CAM_FRICTION;
+      nextVTilt *= CAM_FRICTION;
+
+      // Cap speed
+      if (Math.abs(nextVPan) > CAM_MAX_SPEED) nextVPan = Math.sign(nextVPan) * CAM_MAX_SPEED;
+      if (Math.abs(nextVTilt) > CAM_MAX_SPEED) nextVTilt = Math.sign(nextVTilt) * CAM_MAX_SPEED;
+
+      // Stop if very slow
+      if (Math.abs(nextVPan) < 0.01) nextVPan = 0;
+      if (Math.abs(nextVTilt) < 0.01) nextVTilt = 0;
+
+      camVelocity.current = { pan: nextVPan, tilt: nextVTilt };
+
+      if (nextVPan !== 0 || nextVTilt !== 0) {
+        updateCamera(nextVPan, nextVTilt);
+      }
+
+      rafRef.current = requestAnimationFrame(updateLoop);
+    };
+
+    rafRef.current = requestAnimationFrame(updateLoop);
+
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     return () => {
       console.log('[SimScreen] Unmounted');
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
@@ -208,8 +257,8 @@ export default function SimScreen() {
 
         <div className={`rover-container absolute bottom-[30%] left-1/2 -translate-x-1/2 flex flex-col items-center z-8 ${state.roverState === 'MOVING' ? 'moving' : ''}`} style={{ animation: state.roverState === 'MOVING' ? 'shake 0.12s infinite' : 'idle-bob 4s ease-in-out infinite' }}>
           {/* Camera Mast */}
-          <div className="rover-mast flex flex-col items-center mb-[-10px]">
-            <div className="cam-head w-[48px] h-[36px] bg-[#2A2A2A] rounded-t-[5px] rounded-b-[3px] border border-[#444] flex items-center justify-center relative">
+          <div className="rover-mast flex flex-col items-center mb-[-10px]" style={{ transform: `rotateY(${state.camPan}deg)` }}>
+            <div className="cam-head w-[48px] h-[36px] bg-[#2A2A2A] rounded-t-[5px] rounded-b-[3px] border border-[#444] flex items-center justify-center relative" style={{ transform: `rotateX(${state.camTilt}deg)` }}>
               <div className="cam-lens w-[20px] h-[20px] rounded-full border-2 border-[#555]" style={{ background: 'radial-gradient(circle at 35% 35%, #0A2A4A, #030810)' }}>
                 <div className="absolute top-[6px] left-[8px] w-[5px] h-[5px] rounded-full bg-[rgba(0,212,255,0.3)]"></div>
               </div>
@@ -301,7 +350,7 @@ export default function SimScreen() {
       <div className="sim-bottom grid grid-cols-2 border-t border-[#ffffff12] bg-[#111318] shrink-0 h-[178px]">
         <div className="cam-panel border-r border-[#ffffff12] py-2 px-2.5 flex flex-col gap-[3px] overflow-hidden">
           <div className="panel-lbl font-mono text-[7px] text-[#6B6860] tracking-[2px] border-b border-[#ffffff12] pb-1 mb-[3px] uppercase">// CAM FEED — HEX-01-A</div>
-          <div className="cam-telem font-mono text-[9px] leading-loose">
+          <div className="cam-telem font-mono text-[9px] leading-loose flex-1">
             <div><span className="text-[#6B6860] inline-block w-10">TEMP</span><span className="text-[#A8A49C]">{(-70 + 40 * Math.sin(state.timeFrac * Math.PI * 2)).toFixed(1)}°C</span></div>
             <div><span className="text-[#6B6860] inline-block w-10">PRESS</span><span className="text-[#A8A49C]">0.636 kPa</span></div>
             <div><span className="text-[#6B6860] inline-block w-10">WIND</span><span className="text-[#A8A49C]">4.2 m/s NNW</span></div>
@@ -309,6 +358,48 @@ export default function SimScreen() {
             <div><span className="text-[#6B6860] inline-block w-10">STATE</span><span className={state.roverState === 'IDLE' ? 'text-[#3DFF8F]' : 'text-[#FFB830]'}>{state.roverState}</span></div>
             <div><span className="text-[#6B6860] inline-block w-10">COOL</span><span className="text-[#FFB830]">{state.instrumentCooldown > 0 ? `${state.instrumentCooldown}s` : 'READY'}</span></div>
           </div>
+          
+          <div className="cam-ctrls flex flex-col gap-1 mt-1 border-t border-[#ffffff08] pt-1.5">
+            <div className="font-mono text-[6px] text-[#6B6860] tracking-[1px] uppercase">Camera Pan/Tilt</div>
+            <div className="flex items-center gap-1">
+              <div className="grid grid-cols-3 gap-1">
+                <div />
+                <button 
+                  className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none" 
+                  onPointerDown={() => camInput.current.tilt = -1}
+                  onPointerUp={() => camInput.current.tilt = 0}
+                  onPointerLeave={() => camInput.current.tilt = 0}
+                >↑</button>
+                <div />
+                <button 
+                  className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none" 
+                  onPointerDown={() => camInput.current.pan = -1}
+                  onPointerUp={() => camInput.current.pan = 0}
+                  onPointerLeave={() => camInput.current.pan = 0}
+                >←</button>
+                <button className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#FFB830] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white" onClick={() => resetCamera()}>•</button>
+                <button 
+                  className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none" 
+                  onPointerDown={() => camInput.current.pan = 1}
+                  onPointerUp={() => camInput.current.pan = 0}
+                  onPointerLeave={() => camInput.current.pan = 0}
+                >→</button>
+                <div />
+                <button 
+                  className="w-6 h-6 bg-[#181B22] border border-[#ffffff12] text-[#6B6860] text-[10px] flex items-center justify-center active:bg-[#D64000] active:text-white select-none touch-none" 
+                  onPointerDown={() => camInput.current.tilt = 1}
+                  onPointerUp={() => camInput.current.tilt = 0}
+                  onPointerLeave={() => camInput.current.tilt = 0}
+                >↓</button>
+                <div />
+              </div>
+              <div className="flex-1 font-mono text-[8px] text-[#A8A49C] flex flex-col gap-0.5">
+                <div>PAN: {Math.round(state.camPan)}°</div>
+                <div>TLT: {Math.round(state.camTilt)}°</div>
+              </div>
+            </div>
+          </div>
+          
           <div className="scan-sweep-line w-full h-[1px] opacity-50 mt-1" style={{ background: 'linear-gradient(90deg,transparent,var(--green),transparent)', animation: 'sweep 3s linear infinite' }}></div>
         </div>
         <div className="ctrl-panel flex flex-col items-center justify-center p-2 gap-1.5 touch-none">

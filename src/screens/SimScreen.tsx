@@ -206,15 +206,41 @@ export default function SimScreen() {
           <div className="rock absolute bg-[#160D05] rounded-t-full border-t border-[#241508]" style={{ width: '16px', height: '10px', left: '44%', bottom: 0 }}></div>
         </div>
 
-        <div className={`rover-mast absolute bottom-[34%] left-1/2 -translate-x-1/2 flex flex-col items-center z-8 ${state.roverState === 'MOVING' ? 'moving' : ''}`} style={{ animation: state.roverState === 'MOVING' ? 'shake 0.12s infinite' : 'idle-bob 4s ease-in-out infinite' }}>
-          <div className="cam-head w-[48px] h-[36px] bg-[#2A2A2A] rounded-t-[5px] rounded-b-[3px] border border-[#444] flex items-center justify-center relative">
-            <div className="cam-lens w-[20px] h-[20px] rounded-full border-2 border-[#555]" style={{ background: 'radial-gradient(circle at 35% 35%, #0A2A4A, #030810)' }}>
-              <div className="absolute top-[6px] left-[8px] w-[5px] h-[5px] rounded-full bg-[rgba(0,212,255,0.3)]"></div>
+        <div className={`rover-container absolute bottom-[30%] left-1/2 -translate-x-1/2 flex flex-col items-center z-8 ${state.roverState === 'MOVING' ? 'moving' : ''}`} style={{ animation: state.roverState === 'MOVING' ? 'shake 0.12s infinite' : 'idle-bob 4s ease-in-out infinite' }}>
+          {/* Camera Mast */}
+          <div className="rover-mast flex flex-col items-center mb-[-10px]">
+            <div className="cam-head w-[48px] h-[36px] bg-[#2A2A2A] rounded-t-[5px] rounded-b-[3px] border border-[#444] flex items-center justify-center relative">
+              <div className="cam-lens w-[20px] h-[20px] rounded-full border-2 border-[#555]" style={{ background: 'radial-gradient(circle at 35% 35%, #0A2A4A, #030810)' }}>
+                <div className="absolute top-[6px] left-[8px] w-[5px] h-[5px] rounded-full bg-[rgba(0,212,255,0.3)]"></div>
+              </div>
+              <div className="cam-eye absolute right-[7px] top-[7px] w-[6px] h-[6px] rounded-full bg-[#D64000] shadow-[0_0_8px_#D64000]" style={{ animation: 'eye-blink 5s infinite' }}></div>
             </div>
-            <div className="cam-eye absolute right-[7px] top-[7px] w-[6px] h-[6px] rounded-full bg-[#D64000] shadow-[0_0_8px_#D64000]" style={{ animation: 'eye-blink 5s infinite' }}></div>
+            <div className="mast-pole w-[6px] h-[60px] rounded-[3px] relative" style={{ background: 'linear-gradient(90deg,#222,#444,#222)' }}>
+              <div className="absolute left-[-7px] top-[20px] right-[-7px] h-[2px] bg-[#333]"></div>
+            </div>
           </div>
-          <div className="mast-pole w-[6px] h-[76px] rounded-[3px] relative" style={{ background: 'linear-gradient(90deg,#222,#444,#222)' }}>
-            <div className="absolute left-[-7px] top-[24px] right-[-7px] h-[2px] bg-[#333]"></div>
+
+          {/* Dummy Rover Body */}
+          <div className="rover-body-wrap flex flex-col items-center">
+            <div className="chassis w-[100px] h-[35px] bg-[#1E1E1E] rounded-[8px] border border-[#333] relative shadow-[inset_0_2px_10px_rgba(255,255,255,0.05)]">
+              {/* Details on chassis */}
+              <div className="absolute top-2 left-2 w-4 h-1 bg-[#D64000] opacity-50 rounded-full"></div>
+              <div className="absolute top-2 right-2 w-4 h-1 bg-[#D64000] opacity-50 rounded-full"></div>
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-[2px] bg-[#333]"></div>
+            </div>
+            
+            {/* Wheels */}
+            <div className="wheels flex gap-8 mt-[-10px]">
+              <div className="wheel w-[28px] h-[28px] bg-[#0A0A0A] rounded-full border-2 border-[#222] shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-center">
+                <div className="hub w-3 h-3 bg-[#1A1A1A] rounded-full border border-[#333]"></div>
+              </div>
+              <div className="wheel w-[28px] h-[28px] bg-[#0A0A0A] rounded-full border-2 border-[#222] shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-center">
+                <div className="hub w-3 h-3 bg-[#1A1A1A] rounded-full border border-[#333]"></div>
+              </div>
+              <div className="wheel w-[28px] h-[28px] bg-[#0A0A0A] rounded-full border-2 border-[#222] shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-center">
+                <div className="hub w-3 h-3 bg-[#1A1A1A] rounded-full border border-[#333]"></div>
+              </div>
+            </div>
           </div>
         </div>
 

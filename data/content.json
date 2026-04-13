@@ -1,0 +1,9 @@
+{
+  "appTitle": "Mars Survival Decision Lab",
+  "tagline": "Train mission-critical judgment under pressure.",
+  "intro": "Navigate cascading emergencies across habitat, crew, and rover operations. Each decision changes your survival profile.",
+  "about": {
+    "title": "About This Lab",
+    "body": "Mars Survival Decision Lab is a static, framework-free simulation focused on decision quality. Scenarios, rules, and scoring are data-driven so educators and teams can author new missions by editing JSON."
+  }
+}

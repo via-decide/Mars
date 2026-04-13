@@ -1,0 +1,26 @@
+{
+  "metrics": ["survival", "energy", "time", "risk"],
+  "initial": {
+    "survival": 50,
+    "energy": 50,
+    "time": 20,
+    "risk": 10
+  },
+  "weights": {
+    "survival": 0.5,
+    "energy": 0.2,
+    "time": 0.1,
+    "risk": -0.2
+  },
+  "bands": [
+    { "min": 85, "label": "Mission Ready", "summary": "Your choices balanced urgency, crew safety, and resource stability." },
+    { "min": 65, "label": "Viable but Risky", "summary": "You kept the mission alive, but some decisions raised long-term risk." },
+    { "min": 45, "label": "Fragile Survival", "summary": "The crew survives short term, but mission continuity is uncertain." },
+    { "min": 0, "label": "Critical Failure", "summary": "Decision pattern pushed the habitat beyond safe operating limits." }
+  ],
+  "recommendations": {
+    "highRisk": "Reduce cascading risk by preferring containment and diagnostics over speculative actions.",
+    "lowEnergy": "Preserve power buffer for life support and mobility before optional experiments.",
+    "lowTime": "Front-load decisive containment actions to avoid compound delays."
+  }
+}

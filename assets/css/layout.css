@@ -1,0 +1,40 @@
+.page-shell {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.site-header, .site-footer {
+  background: rgba(3, 6, 13, 0.75);
+  border-bottom: 1px solid #1f2a40;
+}
+
+.site-footer {
+  border-bottom: 0;
+  border-top: 1px solid #1f2a40;
+  padding: 1rem 1.2rem;
+  color: var(--muted);
+}
+
+nav {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 0.9rem;
+}
+
+main {
+  width: min(960px, 100% - 2rem);
+  margin: 1.5rem auto;
+}

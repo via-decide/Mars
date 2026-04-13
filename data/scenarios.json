@@ -1,0 +1,94 @@
+[
+  {
+    "id": "oxygen-leak",
+    "title": "Oxygen Leak",
+    "description": "A pressure drop is detected in habitat module B. You have minutes before breathable air reaches danger levels.",
+    "context": "Sensors disagree on exact leak location due to dust interference.",
+    "choices": [
+      {
+        "id": "isolate-module",
+        "label": "Seal module B and isolate crew to module A",
+        "effects": { "survival": 12, "energy": -4, "time": -1, "risk": -2 }
+      },
+      {
+        "id": "eva-inspection",
+        "label": "Send one crew member outside for manual inspection",
+        "effects": { "survival": 5, "energy": -6, "time": -2, "risk": 5 }
+      },
+      {
+        "id": "system-reboot",
+        "label": "Reboot life-support controls first",
+        "effects": { "survival": 2, "energy": -2, "time": -3, "risk": 7 }
+      }
+    ]
+  },
+  {
+    "id": "dust-storm",
+    "title": "Incoming Dust Storm",
+    "description": "A severe storm will hit in 40 minutes, reducing solar efficiency and communications.",
+    "context": "Power reserves are moderate, but the rover is still outside at sampling site Delta.",
+    "choices": [
+      {
+        "id": "recall-rover",
+        "label": "Recall rover and secure all external systems",
+        "effects": { "survival": 9, "energy": -3, "time": -2, "risk": -1 }
+      },
+      {
+        "id": "continue-sampling",
+        "label": "Continue sampling for one more cycle",
+        "effects": { "survival": 4, "energy": 1, "time": -1, "risk": 6 }
+      },
+      {
+        "id": "switch-low-power",
+        "label": "Switch habitat to low-power mode immediately",
+        "effects": { "survival": 7, "energy": 5, "time": -1, "risk": 1 }
+      }
+    ]
+  },
+  {
+    "id": "water-ration",
+    "title": "Water Rationing Conflict",
+    "description": "Recycler yield dropped 18%. Crew requests extra water due to workload fatigue.",
+    "context": "Medical systems warn that morale and cognition may degrade with strict rationing.",
+    "choices": [
+      {
+        "id": "strict-ration",
+        "label": "Apply strict rationing for all crew",
+        "effects": { "survival": 7, "energy": 2, "time": -1, "risk": 3 }
+      },
+      {
+        "id": "priority-health",
+        "label": "Give additional rations to high-workload crew",
+        "effects": { "survival": 9, "energy": -2, "time": -1, "risk": 1 }
+      },
+      {
+        "id": "emergency-melt",
+        "label": "Run emergency ice melt extraction",
+        "effects": { "survival": 6, "energy": -7, "time": -2, "risk": 2 }
+      }
+    ]
+  },
+  {
+    "id": "comms-delay",
+    "title": "Comms Delay & Medical Alert",
+    "description": "Earth uplink is delayed. A crew member reports dizziness after EVA.",
+    "context": "You can treat locally, wait for remote protocol, or schedule immediate diagnostics.",
+    "choices": [
+      {
+        "id": "local-protocol",
+        "label": "Run local emergency protocol and monitor",
+        "effects": { "survival": 10, "energy": -2, "time": -1, "risk": -1 }
+      },
+      {
+        "id": "wait-earth",
+        "label": "Wait for Earth medical confirmation",
+        "effects": { "survival": 3, "energy": 1, "time": -3, "risk": 6 }
+      },
+      {
+        "id": "full-diagnostics",
+        "label": "Suspend operations and run full diagnostics",
+        "effects": { "survival": 8, "energy": -4, "time": -2, "risk": 0 }
+      }
+    ]
+  }
+]
